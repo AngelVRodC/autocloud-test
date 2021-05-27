@@ -1,12 +1,16 @@
 import cors from 'cors';
-import express from 'express';
-import { getBreweries } from './api';
+import passport from 'passport';
+
+import express, { Request, Response} from 'express';
+import getBreweries from './functions';
+import { authMiddleware } from './middlewares';
 
 const app = express();
+app.use(passport.initialize());
+app.use(authMiddleware);
 
-app.get('/', async (req: express.Request, res: express.Response) => {
+app.get('/breweries/',async (req: Request, res: Response) => {
   const result = await getBreweries();
-  console.log(result);
   res.status(200).send(result);
 });
 
@@ -15,5 +19,5 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cors());
 
 app.listen(3000, () => {
-  console.log('app ready')
+  console.log('App ready')
 })
