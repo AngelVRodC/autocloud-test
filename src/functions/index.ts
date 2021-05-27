@@ -1,33 +1,29 @@
-import { getBreweries as getBreweriesFromApi } from '../api';
-import {
-  deleteNullAttributes,
-  sortArrayByAttribute,
-  groupArrayByAttribute,
-  objectKeysInSnakeCaseToCamelCase,
-} from '../utils';
+import { Request, Response } from 'express';
 
-const getBreweries = async () => {
+import {
+  breweriesWithoutNullAttributes,
+  breweriesArrayWithCamelCaseAttributes,
+  groupBreweriesByStateAndSortByCreatedAt
+} from './pipeline-functions';
+import { getBreweries } from '../api';
+
+export const executePipeline = async (req: Request, res: Response) => {
 
   // get the breweries from api
-  const apiResult = await getBreweriesFromApi();
+  const apiBreweriesArray: BreweryApiInterface[] = await getBreweries();
  
-  // Delete the null attributes
-  let output = apiResult.map((element) => deleteNullAttributes(element));
+  // Step 1 Breweries without null attributes
+  const breweriesETLStep1 = breweriesWithoutNullAttributes(apiBreweriesArray);
 
-  // transform the snake case attributes to camel case
-  output = output.map((element) => objectKeysInSnakeCaseToCamelCase(element));
+  // Step 2 - Breweries array with camel case properties
+  const breweriesETLStep2 = breweriesArrayWithCamelCaseAttributes(breweriesETLStep1);
 
-  // Group by state
-  output = groupArrayByAttribute(output, 'state');
+  // Step - 3 Group by state an order by date
+  const breweriesETLStep3 = groupBreweriesByStateAndSortByCreatedAt(breweriesETLStep2);
 
-  // Order By Date
+  // TODO: Step 4 - If the brewery have coordinates set the region
 
-  Object.keys(output).forEach((key: any) => {
-    const sortedArray = sortArrayByAttribute(output[key], 'createdAt');
-    output[key] = sortedArray;
-  });
+  const output: OutputInterface = breweriesETLStep3;
 
-  return output;
+  res.status(200).send(output);
 }
-
-export default getBreweries;

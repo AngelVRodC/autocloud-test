@@ -1,25 +1,22 @@
 import cors from 'cors';
+import express from 'express';
 import passport from 'passport';
-import express, { Request, Response } from 'express';
 
-import getBreweries from './functions';
+import { executePipeline } from './functions';
 import { authMiddleware } from './middlewares';
 
 const server = express();
 server.use(passport.initialize());
 server.use(authMiddleware);
-
-server.get('/breweries/',async (req: Request, res: Response) => {
-  const result = await getBreweries();
-  res.status(200).send(result);
-});
-
 server.use(express.json());
 server.use(express.urlencoded({ extended: false }));
 server.use(cors());
 
+server.get('/breweries/', executePipeline);
+
+
 server.listen(3000, () => {
-  console.log('App ready')
+  console.log('Server ready');
 })
 
 export default server;

@@ -1,8 +1,8 @@
-export const snakeCaseToCamelCase = (str: string) =>
+export const snakeCaseToCamelCase = (str: string): string =>
   str.replace(/([-_]\w)/g, g => g[1].toUpperCase());
 
-export const objectKeysInSnakeCaseToCamelCase = (input: any) => {
-  let newObject = {};
+export const objectKeysInSnakeCaseToCamelCase = (input: GenericObjectInterface): GenericObjectInterface => {
+  let newObject = { id: input.id};
   Object.keys(input).forEach((key: string) => {
     newObject = {
       ...newObject,
@@ -12,7 +12,7 @@ export const objectKeysInSnakeCaseToCamelCase = (input: any) => {
   return newObject;
 }
 
-export const deleteNullAttributes = (input: any) => {
+export const deleteNullAttributes = (input: GenericObjectInterface): GenericObjectInterface => {
   const output = { ...input };
   Object.keys(output).forEach((key: string) => {
     if (output[key] === null) {
@@ -31,7 +31,7 @@ export const groupArrayByAttribute = (array: any[], attribute: string) => {
 };
 
 
-export const sortArrayByAttribute = (array: any[], attribute: string) => {
+export const sortArrayByAttribute = (array: GenericObjectInterface[], attribute: string): any[] => {
   return array.sort((a, b) => {
     if (a[attribute] > b[attribute])
       return -1;
