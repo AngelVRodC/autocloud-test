@@ -22,7 +22,7 @@ describe("test utils functions", () => {
   });
 
   it("Sort Array by attribute", () => {
-    // if we order an array from highest to lowest, the first element must be greater than the last
+    /* if we order an array from highest to lowest, the first element must be greater than the last*/
     const result = sortArrayByAttribute(breweriesMock, 'id');
     const lastIndex = result.length - 1;
     expect(result[0].id).toBeGreaterThan(result[lastIndex].id);
