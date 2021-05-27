@@ -16,6 +16,7 @@
     "@types/express": "^4.17.12",
     "@types/jest": "^26.0.23",
     "@types/passport": "^1.0.6",
+    "@types/supertest": "^2.0.11",
     "jest": "^27.0.1",
     "nodemon": "^2.0.7",
     "ts-jest": "^27.0.1",
@@ -28,6 +29,7 @@
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "passport": "^0.4.1",
-    "passport-unique-token": "^2.0.0"
+    "passport-unique-token": "^2.0.0",
+    "supertest": "^6.1.3"
   }
 }
