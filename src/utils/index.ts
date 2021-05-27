@@ -34,9 +34,9 @@ export const groupArrayByAttribute = (array: any[], attribute: string) => {
 export const sortArrayByAttribute = (array: any[], attribute: string) => {
   return array.sort((a, b) => {
     if (a[attribute] > b[attribute])
-      return 1;
-    if (a[attribute] < b[attribute])
       return -1;
+    if (a[attribute] < b[attribute])
+      return 1;
     return 0;
   });
 }
